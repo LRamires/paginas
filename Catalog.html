@@ -63,6 +63,7 @@
                 return;
             }
 		const searchParams = new URLSearchParams(window.location.search);
+		console.log(searchParams.has('ContactID')); // true
 		var NICEContactID = searchParams.has('ContactID')
 		console.log(NICEContactID)
             let message = "Compra finalizada!\n\nProdutos:\n";
