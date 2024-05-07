@@ -63,9 +63,8 @@
                 return;
             }
 		const searchParams = new URLSearchParams(window.location.search);
-		console.log(searchParams.has('ContactID')); // true
-		var NICEContactID = searchParams.has('ContactID')
-		console.log(NICEContactID)
+		var NICEContactID = searchParams.get('ContactID');
+		console.log(NICEContactID);
             let message = "Compra finalizada!\n\nProdutos:\n";
             cart.forEach(item => {
                 message += `Produto ${item.id} - R$ ${item.price.toFixed(2)}\n`;
