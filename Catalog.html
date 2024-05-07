@@ -77,17 +77,18 @@
             cart = [];
             updateCart();
 		
-	    var apiUrl = 'https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\AutoglassSpawn&bus_no=4600164&scriptId=172314663&skill_no=11384803&p1=${NICEContactID}&p2=${variaveisCXone}&p3=&p4=&p5=&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177';
-	    console.log(apiUrl);
-		fetch('https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\AutoglassSpawn&bus_no=4600164&scriptId=172314663&skill_no=11384803&p1=${NICEContactID}&p2=${variaveisCXone}&p3=&p4=&p5=&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177'
-		     method: 'GET'
-			headers: {
-			'Access-Control-Allow-Origin', '*',
-			'Access-Control-Allow-Headers', 'X-Requested-With',
-			})
-		.then(response=> {
-				return response.json();
-		})	
+	   // var apiUrl = 'https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\AutoglassSpawn&bus_no=4600164&scriptId=172314663&skill_no=11384803&p1=${NICEContactID}&p2=${variaveisCXone}&p3=&p4=&p5=&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177';
+	  //  console.log(apiUrl);
+	fetch('https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\AutoglassSpawn&bus_no=4600164&scriptId=172314663&skill_no=11384803&p1=${NICEContactID}&p2=${variaveisCXone}&p3=&p4=&p5=&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177', {
+		method: 'GET',
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Headers': 'X-Requested-With',
+		},
+	})
+		.then(response => response.json())
+		.then(response => console.log(response))
+		.catch(err => console.error(err));	
         }
     </script>
 </body>
