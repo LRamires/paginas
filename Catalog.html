@@ -69,7 +69,7 @@
 	    let variaveisCXone = "";
             cart.forEach(item => {
                 message += `Produto ${item.id} - R$ ${item.price.toFixed(2)}\n`;
-		variaveisCXone += `${item.id}\${item.price.toFixed(2)}|`;
+		variaveisCXone += `${item.id} ${item.price.toFixed(2)}\n`;
             });
 
             alert(message);
