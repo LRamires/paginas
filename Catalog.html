@@ -77,7 +77,7 @@
             cart = [];
             updateCart();
 		
-		fetch('https://cxone.niceincontact.com/auth/token',{Method:'POST',Headers:{'Content-Type':'application/x-www-form-urlencoded','Authorization':'Basic ZGM1NzFiNDUtNjBjMy00YmIyLWE2OTEtYTJlMmVmNjNiMWQwOlBlbUFhUU0lMmYzM3lXMG1ONXBzdVFuZyUzZCUzZA=='},body:JSON.stringify({grant_type:password,username=KCPPGN6M35TIV35MONHKAGBSXFU7COMUSNR4KV7HZSJ27DB66IFA%3d%3d%3d%3d,password=H6FFMQ4NBTRIOCTUKQFLHOMR3KNOC4YRLKI7OIMDO36NW2BDZTBA%3d%3d%3d%3d)})
+		fetch('https://cxone.niceincontact.com/auth/token',{Method:'POST',Headers:{'Content-Type':'application/x-www-form-urlencoded','Authorization':'Basic ZGM1NzFiNDUtNjBjMy00YmIyLWE2OTEtYTJlMmVmNjNiMWQwOlBlbUFhUU0lMmYzM3lXMG1ONXBzdVFuZyUzZCUzZA=='},body: 'grant_type:password,username=KCPPGN6M35TIV35MONHKAGBSXFU7COMUSNR4KV7HZSJ27DB66IFA%3d%3d%3d%3d,password=H6FFMQ4NBTRIOCTUKQFLHOMR3KNOC4YRLKI7OIMDO36NW2BDZTBA%3d%3d%3d%3d'})
   .then(response => {
     //handle response            
     console.log(response);
@@ -88,6 +88,7 @@
   })
   .catch(error => {
     //handle error
+	console.log(error);
   });
 	}	
 	    
