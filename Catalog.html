@@ -76,10 +76,22 @@
             alert(variaveisCXone);
             cart = [];
             updateCart();
-fetch('https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\AutoglassSpawn&bus_no=4600164&scriptId=172314663&skill_no=11384803&p1=&p2=&p3=&p4=&p5=&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177')
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));
+
+		            fetch('https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\AutoglassSpawn&bus_no=4600164&scriptId=172314663&skill_no=11384803&p1=&p2=&p3=&p4=&p5=&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
 		
 	}	
 	    
