@@ -1,20 +1,19 @@
-// Define your product data
+// Sample product data
 const products = [
     { id: 1, name: 'Product 1', price: 10 },
     { id: 2, name: 'Product 2', price: 20 },
-    { id: 3, name: 'Product 3', price: 25 },
+    { id: 3, name: 'Product 3', price: 30 },
     { id: 4, name: 'Product 4', price: 40 },
-    { id: 5, name: 'Product 5', price: 52 },
-    { id: 6, name: 'Product 6', price: 70 },
-    { id: 7, name: 'Product 7', price: 22 },
-    { id: 8, name: 'Product 8', price: 4 },
-    { id: 9, name: 'Product 9', price: 7 },
-    { id: 10, name: 'Product 10', price: 80 },
-    { id: 11, name: 'Product 11', price: 220 },
     // Add more products here
 ];
 
 let cart = [];
+let cartId = generateCartId();
+
+// Function to generate a unique cart ID
+function generateCartId() {
+    return Math.random().toString(36).substr(2, 9);
+}
 
 // Function to display products on the page
 function displayProducts() {
@@ -22,12 +21,13 @@ function displayProducts() {
     productList.innerHTML = '';
 
     products.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.innerHTML = `
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+        productItem.innerHTML = `
             <p>${product.name} - $${product.price}</p>
             <button onclick="addToCart(${product.id})">Add to Cart</button>
         `;
-        productList.appendChild(productCard);
+        productList.appendChild(productItem);
     });
 }
 
@@ -41,8 +41,8 @@ function addToCart(productId) {
 }
 
 // Function to remove product from cart
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
+function removeFromCart(index) {
+    cart.splice(index, 1);
     updateCart();
 }
 
@@ -51,43 +51,31 @@ function updateCart() {
     const cartItems = document.getElementById('cart-items');
     cartItems.innerHTML = '';
 
-    cart.forEach(item => {
-        const cartItem = document.createElement('div');
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('li');
         cartItem.innerHTML = `
             <p>${item.name} - $${item.price}</p>
-            <button onclick="removeFromCart(${item.id})">Remove</button>
+            <button onclick="removeFromCart(${index})">Remove</button>
         `;
         cartItems.appendChild(cartItem);
     });
 }
 
-// Function to open cart modal
-function openCart() {
-    document.getElementById('cart-modal').style.display = 'block';
-}
-
-// Function to close cart modal
-function closeCart() {
-    document.getElementById('cart-modal').style.display = 'none';
-}
-
 // Function to finalize cart
-function checkout() {
-    // Call Node.js backend to handle checkout and API integration
-    // You can use fetch API to make HTTP requests to your Node.js server
-    // Example:
-    // fetch('/checkout', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ cart })
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     // Handle response from server
-    // })
-    // .catch(error => console.error('Error:', error));
+function finalizeCart() {
+    // Save cart ID and items to a text file
+    const data = `Cart ID: ${cartId}\n\nItems:\n${cart.map(item => `${item.name} - $${item.price}`).join('\n')}`;
+
+    // Simulating file download by creating a temporary link
+    const link = document.createElement('a');
+    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(data);
+    link.download = 'cart.txt';
+    link.click();
+
+    // Reset cart and generate new cart ID
+    cart = [];
+    cartId = generateCartId();
+    updateCart();
 }
 
 // Display products when the page loads
