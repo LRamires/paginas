@@ -3,95 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Produtos</title>
-    <style>
-        .product {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .cart {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Product Catalog</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Catálogo de Produtos</h1>
-
-    <div class="products">
-        <div class="product" data-id="1" data-price="50">Produto 1 - R$ 50,00 <button onclick="addToCart(1, 50)">Adicionar ao Carrinho</button></div>
-        <div class="product" data-id="2" data-price="80">Produto 2 - R$ 80,00 <button onclick="addToCart(2, 80)">Adicionar ao Carrinho</button></div>
-        <div class="product" data-id="3" data-price="120">Produto 3 - R$ 120,00 <button onclick="addToCart(3, 120)">Adicionar ao Carrinho</button></div>
+    <header>
+        <h1>Product Catalog</h1>
+        <button onclick="openCart()">View Cart</button>
+    </header>
+    <div id="product-list">
+        <!-- Product details will be dynamically added here -->
     </div>
 
-    <div class="cart">
-        <h2>Carrinho de Compras</h2>
-        <ul id="cart-list"></ul>
-        <p id="total">Total: R$ 0,00</p>
-        <button onclick="finalizePurchase()">Finalizar Compra</button>
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+            <button onclick="checkout()">Finalize Cart</button>
+        </div>
     </div>
 
-    <script>
-        let cart = [];
-
-        function addToCart(productId, price) {
-            cart.push({ id: productId, price: price });
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartList = document.getElementById("cart-list");
-            const totalElement = document.getElementById("total");
-            let total = 0;
-
-            cartList.innerHTML = "";
-            cart.forEach(item => {
-                const li = document.createElement("li");
-                li.textContent = `Produto ${item.id} - R$ ${item.price.toFixed(2)}`;
-                cartList.appendChild(li);
-                total += item.price;
-            });
-
-            totalElement.textContent = `Total: R$ ${total.toFixed(2)}`;
-        }
-
-        function finalizePurchase() {
-            if (cart.length === 0) {
-                alert("Seu carrinho está vazio!");
-                return;
-            }
-		const searchParams = new URLSearchParams(window.location.search);
-		var NICEContactID = searchParams.get('ContactID');
-		console.log(NICEContactID);
-            let message = "Compra finalizada!\n\nProdutos:\n";
-	    let variaveisCXone = "";
-            cart.forEach(item => {
-                message += `Produto ${item.id} - R$ ${item.price.toFixed(2)}\n`;
-		variaveisCXone += `${item.id} ${item.price.toFixed(2)}\n`;
-            });
-
-            alert(message);
-            alert(variaveisCXone);
-            cart = [];
-            updateCart();
-
-		.then(response => {
-    //handle response            
-    console.log(response);
-  })
-  .then(data => {
-    //handle data
-    console.log(data);
-  })
-  .catch(error => {
-    //handle error
-	console.log(error);
-  });
-	}	
-	    
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
