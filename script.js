@@ -64,7 +64,7 @@ function updateCart() {
 // Function to finalize cart
 function finalizeCart() {
     // Save cart ID and items to a text file
-    const data = `Cart ID: ${cartId}\n\nItems:\n${cart.map(item => `${item.name} - $${item.price}`).join('\n')}`;
+    const data = `Cart ID: ${cartId}|Items:|${cart.map(item => `${item.name} - $${item.price}`).join('|')}`;
 
     // Simulating file download by creating a temporary link
     const link = document.createElement('a');
