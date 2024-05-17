@@ -9,21 +9,18 @@
 <body>
     <header>
         <h1>Product Catalog</h1>
-        <button onclick="openCart()">View Cart</button>
     </header>
+
     <div id="product-list">
         <!-- Product details will be dynamically added here -->
     </div>
 
-    <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeCart()">&times;</span>
-            <h2>Your Cart</h2>
-            <div id="cart-items">
-                <!-- Cart items will be dynamically added here -->
-            </div>
-            <button onclick="checkout()">Finalize Cart</button>
-        </div>
+    <div id="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <button id="finalize-btn" onclick="finalizeCart()">Finalize Cart</button>
     </div>
 
     <script src="script.js"></script>
