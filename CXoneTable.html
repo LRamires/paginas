@@ -47,12 +47,7 @@
     // Extrai parâmetros da URL
     var urlParams = new URLSearchParams(window.location.search);
        
-       const vv5 = urlParams.get('v5');
-       const vv6 = urlParams.get('v6');
 
-            // Decodifica o texto
-       const vvv5 = decodeURIComponent(vv5);
-       const vvv6 = decodeURIComponent(vv6);
 
             // Substitui caracteres de quebra de linha por <br>
             const vvvv5 = vvv5.replace(/%0A/g, '<br>');
@@ -64,8 +59,8 @@
     document.getElementById('v2').textContent = urlParams.get('v2');
     document.getElementById('v3').textContent = urlParams.get('v3');
     document.getElementById('v4').textContent = urlParams.get('v4');
-    document.getElementById('v5').textContent = vvvv5;
-    document.getElementById('v6').textContent = vvvv6;
+    document.getElementById('v5').textContent.replace('#', '<br>') = urlParams.get('v5');
+    document.getElementById('v6').textContent.replace('#', '<br>') = urlParams.get('v6');
         };
    </script>
 <title>CXone Table</title>
