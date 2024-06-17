@@ -46,14 +46,26 @@
      window.onload = function() {
     // Extrai parâmetros da URL
     var urlParams = new URLSearchParams(window.location.search);
-    
+       
+       const vv5 = urlParams.get('v5');
+       const vv6 = urlParams.get('v6');
+
+            // Decodifica o texto
+       const vvv5 = decodeURIComponent(vv5);
+       const vvv6 = decodeURIComponent(vv6);
+
+            // Substitui caracteres de quebra de linha por <br>
+            const vvvv5 = vvv5.replace(/%0A/g, '<br>');
+            const vvvv6 = vvv6.replace(/%0A/g, '<br>');
+       
+       
     // Define os valores na tabela
     document.getElementById('v1').textContent = urlParams.get('v1');
     document.getElementById('v2').textContent = urlParams.get('v2');
     document.getElementById('v3').textContent = urlParams.get('v3');
     document.getElementById('v4').textContent = urlParams.get('v4');
-    document.getElementById('v5').textContent = urlParams.get('v5');
-    document.getElementById('v6').textContent = urlParams.get('v6');
+    document.getElementById('v5').textContent = vvvv5;
+    document.getElementById('v6').textContent = vvvv6;
         };
    </script>
 <title>CXone Table</title>
