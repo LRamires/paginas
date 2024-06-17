@@ -49,15 +49,15 @@
 
        const textoEncoded = urlParams.get('v5'); // Obtém o texto codificado
 
-            // Decodifica o texto
+              // Decodifica o texto
             const textoDecoded = decodeURIComponent(textoEncoded);
 
             // Substitui quebras de linha por <br> tags
-            const v5 = textoDecoded.replace(/\n/g, '<br>');
+            const textoComQuebraDeLinha = textoDecoded.replace(/\n/g, '<br>');
 
             // Exibe o texto na página
-            const textoElement = document.getElementById('v5');
-            textoElement.innerHTML = v5;
+            const textoElement = document.getElementById('textoComQuebraDeLinha');
+            textoElement.innerHTML = textoComQuebraDeLinha;
 
        
     // Define os valores na tabela
@@ -90,7 +90,7 @@
       <td id="v2"></td>
       <td id="v3"></td>
       <td id="v4"></td>
-      <td id="v5"></td>
+      <td id="textoComQuebraDeLinha"></td>
       <td id="v6"></td>
     </tr>
   </tbody>
