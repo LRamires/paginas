@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  /* Estilos para a tabela */
+  table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #183884;
+  }
+  
+  /* Estilo para cantos arredondados */
+  th:first-child {
+    border-top-left-radius: 10px;
+  }
+  
+  th:last-child {
+    border-top-right-radius: 10px;
+  }
+  
+  td:first-child {
+    border-bottom-left-radius: 10px;
+  }
+  
+  td:last-child {
+    border-bottom-right-radius: 10px;
+  }
+</style>
+<title>Tabela Moderna com Cantos Arredondados</title>
+</head>
+<body>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Informações</th>
+      <th>Detalhes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Item 1</td>
+      <td>
+        <ul>
+          <li>Subitem 1</li>
+          <li>Subitem 2</li>
+        </ul>
+      </td>
+      <td>Detalhes do Item 1</td>
+    </tr>
+    <tr>
+      <td>Item 2</td>
+      <td>
+        <ul>
+          <li>Subitem 1</li>
+          <li>Subitem 2</li>
+          <li>Subitem 3</li>
+        </ul>
+      </td>
+      <td>Detalhes do Item 2</td>
+    </tr>
+    <tr>
+      <td>Item 3</td>
+      <td>
+        <ul>
+          <li>Subitem 1</li>
+        </ul>
+      </td>
+      <td>Detalhes do Item 3</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
