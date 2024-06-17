@@ -47,26 +47,14 @@
     // Extrai parâmetros da URL
     var urlParams = new URLSearchParams(window.location.search);
 
-       const textoEncoded = urlParams.get('v5'); // Obtém o texto codificado
-
-              // Decodifica o texto
-            const textoDecoded = decodeURIComponent(textoEncoded);
-
-            // Substitui quebras de linha por <br> tags
-            const textoComQuebraDeLinha = textoDecoded.replace(/\n/g, '<br>');
-
-            // Exibe o texto na página
-            const textoElement = document.getElementById('textoComQuebraDeLinha');
-            textoElement.innerHTML = textoComQuebraDeLinha;
-
-       
+      
     // Define os valores na tabela
     document.getElementById('v1').textContent = urlParams.get('v1');
     document.getElementById('v2').textContent = urlParams.get('v2');
     document.getElementById('v3').textContent = urlParams.get('v3');
     document.getElementById('v4').textContent = urlParams.get('v4');
-    //document.getElementById('v5').textContent = urlParams.get('v5');
-    document.getElementById('v6') = urlParams.get('v6');
+    document.getElementById('v5').textContent = urlParams.get('v5');
+    document.getElementById('v6').textContent = urlParams.get('v6');
         };
    </script>
 <title>CXone Table</title>
