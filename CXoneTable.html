@@ -42,17 +42,17 @@
     border-bottom-right-radius: 10px;
   }
 </style>
-  <script>
-  var Nome = GetURLParameter('v1');
-  var NumCotacao = GetURLParameter('v2');
-  </script>
    <script>
     // Extrai parâmetros da URL
     var urlParams = new URLSearchParams(window.location.search);
     
     // Define os valores na tabela
-    document.getElementById('nome').textContent = urlParams.get('nome');
-    document.getElementById('idade').textContent = urlParams.get('idade');
+    document.getElementById('v1').textContent = urlParams.get('v1');
+    document.getElementById('v2').textContent = urlParams.get('v2');
+         document.getElementById('v3').textContent = urlParams.get('v3');
+    document.getElementById('v4').textContent = urlParams.get('v4');
+         document.getElementById('v5').textContent = urlParams.get('v5');
+    document.getElementById('v6').textContent = urlParams.get('v6');
         };
 <title>CXone Table</title>
 </head>
