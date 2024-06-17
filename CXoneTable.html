@@ -46,6 +46,14 @@
   var Nome = GetURLParameter('v1');
   var NumCotacao = GetURLParameter('v2');
   </script>
+   <script>
+    // Extrai parâmetros da URL
+    var urlParams = new URLSearchParams(window.location.search);
+    
+    // Define os valores na tabela
+    document.getElementById('nome').textContent = urlParams.get('nome');
+    document.getElementById('idade').textContent = urlParams.get('idade');
+        };
 <title>CXone Table</title>
 </head>
 <body>
@@ -63,18 +71,12 @@
   </thead>
   <tbody>
     <tr>
-      <td>' + Nome + '</td>
-      <td>' + NumCotacao + '</td>
-      <td>Codigo Cliente</td>
-      <td>Empresa Prefencial</td>
-      <td rowspan="3">
-          Expedicao 1 <br>
-          Expedicao 2 <br>
-          Expedicao 3 <br>
-        </td>
-        <td rowspan="3"> 
-          Rua Doutor Cesario Mota Junior, 555 - Apto 111 <br> Sao Paulo - SP - CEP 01111-030
-        </td>
+      <td id="v1"></td>
+      <td id="v2"></td>
+      <td id="v3"></td>
+      <td id="v4"></td>
+      <td id="v4"></td>
+      <td id="v5"></td>
     </tr>
   </tbody>
 </table>
