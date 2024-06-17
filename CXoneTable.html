@@ -42,6 +42,10 @@
     border-bottom-right-radius: 10px;
   }
 </style>
+  <script>
+  var Nome = GetURLParameter('v1');
+  var NumCotacao = GetURLParameter('v2');
+  </script>
 <title>CXone Table</title>
 </head>
 <body>
@@ -59,8 +63,8 @@
   </thead>
   <tbody>
     <tr>
-      <td>Nome</td>
-      <td>Número Cotação</td>
+      <td>${Nome}</td>
+      <td>${NumCotacao}</td>
       <td>Codigo Cliente</td>
       <td>Empresa Prefencial</td>
       <td rowspan="3">
