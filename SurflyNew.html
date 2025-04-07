@@ -71,6 +71,10 @@
              url.searchParams.set('p1', 'endWorkItem');
              url.searchParams.set('p2', followerLink);
              url.searchParams.set('p3', randomIdNice);
+             url.searchParams.set('p4', service);
+             url.searchParams.set('p5', name);
+             url.searchParams.set('p6', email);
+          
              fetch(url, { mode: "no-cors" });
          }
  
@@ -88,7 +92,8 @@
  
              var surflyMetadata = { 
                  "name": document.getElementById('name').value, 
-                 "email": "pedro@surfly.com" 
+                 "email": "pedro@surfly.com",
+                 "service": document.getElementById('service').value
              };
  
              videochatSession.on("session_created", function (session, event) {
