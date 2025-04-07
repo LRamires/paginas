@@ -61,9 +61,9 @@
              url.searchParams.set('p1', 'startWorkItem');
              url.searchParams.set('p2', followerLink);
              url.searchParams.set('p3', randomIdNice);
-             url.searchParams.set('p4', service);
-             url.searchParams.set('p5', name);
-             url.searchParams.set('p6', email);
+             url.searchParams.set('p4', document.getElementById('service').value);
+             url.searchParams.set('p5', document.getElementById('name').value);
+             url.searchParams.set('p6', document.getElementById('email').value);
              url.searchParams.set('p7', surflyMetadata);
              fetch(url, { mode: "no-cors" });
          }
@@ -98,15 +98,7 @@
                  "service": document.getElementById('service').value
              };
 
-          var vName = document.getElementById('name').value;
-          var vEmail= document.getElementById('email').value;
-           var vService = document.getElementById('service').value;
-          
-           console.log('MEtadata' + surflyMetadata);
-           console.log('Name' + vName);
-           console.log('Email' + vEmail);
-           console.log('Service' + vService);
- 
+         
              videochatSession.on("session_created", function (session, event) {
                  console.log('Waiting for confirmation');
                  session.startLeader(null, surflyMetadata);
