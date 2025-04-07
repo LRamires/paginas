@@ -97,6 +97,15 @@
                  "email": "pedro@surfly.com",
                  "service": document.getElementById('service').value
              };
+
+          var vName = document.getElementById('name').value;
+          var vEmail= document.getElementById('email').value;
+           var vService = document.getElementById('service').value;
+          
+           console.log('MEtadata' + surflyMetadata);
+           console.log('Name' + vName);
+           console.log('Email' + vEmail);
+           console.log('Service' + vService);
  
              videochatSession.on("session_created", function (session, event) {
                  console.log('Waiting for confirmation');
