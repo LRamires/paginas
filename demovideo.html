@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demais Subseções - JUSTIÇA FEDERAL</title>
+<style>
+  :root{
+    --purple: #6b1c6e;
+    --blue: #1a4f9c;
+    --blue-hover: #143f7d;
+    --text: #262626;
+    --bg: #ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header.topbar{
+    background: var(--purple);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 14px 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .search-box{
+    display:flex;
+    align-items:center;
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    max-width:260px;
+  }
+  .search-box input{
+    border:none;
+    padding:8px 12px;
+    outline:none;
+    font-size:14px;
+    width:180px;
+  }
+  .search-box button{
+    border:none;
+    background:transparent;
+    padding:0 10px;
+    cursor:pointer;
+    font-size:16px;
+  }
+  nav.top-links{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  nav.top-links a{
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+  }
+  nav.top-links a.pill{
+    background:#8a3d8c;
+    padding:8px 14px;
+    border-radius:6px;
+  }
+  .breadcrumb{
+    padding: 16px 24px 0 24px;
+    font-size: 14px;
+  }
+  .breadcrumb a{
+    color:#1a4f9c;
+    text-decoration:none;
+  }
+  .breadcrumb span{
+    color:#555;
+  }
+  main{
+    padding: 8px 24px 60px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1{
+    font-size: 30px;
+    margin-bottom: 6px;
+  }
+  p.subtitle{
+    font-size: 16px;
+    color:#333;
+    margin-top:0;
+    margin-bottom: 28px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px){
+    .grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px){
+    .grid{ grid-template-columns: 1fr; }
+    header.topbar{ flex-direction:column; align-items:flex-start; }
+  }
+  .subsec-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background: var(--blue);
+    color:#fff;
+    border:none;
+    border-radius: 28px;
+    padding: 16px 22px;
+    font-size: 16px;
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+    transition: background .15s ease, transform .1s ease;
+  }
+  .subsec-btn:hover{
+    background: var(--blue-hover);
+    transform: translateY(-1px);
+  }
+  .subsec-btn:focus-visible{
+    outline: 3px solid #ffbf47;
+    outline-offset: 2px;
+  }
+  .pin{
+    font-size: 16px;
+  }
+  footer.note{
+    max-width:1200px;
+    margin: 40px auto 0 auto;
+    padding: 0 24px;
+    font-size:12px;
+    color:#888;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="search-box">
+    <input type="text" placeholder="Digite sua pesquisa" aria-label="Pesquisa">
+    <button aria-label="Pesquisar">🔍</button>
+  </div>
+  <nav class="top-links">
+    <a href="#">Acesso rápido</a>
+    <a href="#">Público interno</a>
+    <a href="#">Intranet</a>
+    <a href="#" class="pill">Portal 1º Grau</a>
+  </nav>
+</header>
+
+<div class="breadcrumb">
+  <a href="#">Início</a> <span>»</span>
+  <a href="#">Balcão Virtual do TRF6</a> <span>»</span>
+  <a href="#">Como funciona</a> <span>»</span>
+  <span>Demais Subseções</span>
+</div>
+
+<main>
+  <h1>Lista de Subseções Judiciárias de Minas Gerais</h1>
+  <p class="subtitle">Selecione a Subseção Judiciária para atendimento da demanda desejada.</p>
+
+  <div class="grid" id="subsecoes-grid"></div>
+</main>
+
+<footer class="note">
+  Ambiente de demonstração — atendimento em vídeo simulado para fins de apresentação.
+</footer>
+
+<script>
+  const subsecoes = [
+    "Divinópolis","Governador Valadares","Ipatinga",
+    "Ituiutaba","Janaúba","Juiz de Fora",
+    "Lavras","Manhuaçu","Montes Claros",
+    "Muriaé","Paracatu","Passos",
+    "Patos de Minas","Poços de Caldas","Ponte Nova",
+    "Pouso Alegre","São João del-Rei","São João do Paraíso",
+    "Sete Lagoas","Teófilo Otoni","Uberaba",
+    "Uberlândia","Unaí","Varginha","Viçosa"
+  ];
+
+  const grid = document.getElementById("subsecoes-grid");
+  subsecoes.forEach(nome => {
+    const a = document.createElement("a");
+    a.className = "subsec-btn";
+    a.href = "atendimento.html?subsecao=" + encodeURIComponent(nome);
+    a.innerHTML = '<span class="pin">📍</span><span>' + nome + '</span>';
+    grid.appendChild(a);
+  });
+</script>
+
+</body>
+</html>
