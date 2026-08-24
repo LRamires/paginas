@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atendimento por Vídeo - JUSTIÇA FEDERAL</title>
+<style>
+  :root{
+    --purple: #6b1c6e;
+    --blue: #1a4f9c;
+    --text: #262626;
+    --bg: #ffffff;
+    --green: #1c8a4b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header.topbar{
+    background: var(--purple);
+    padding: 14px 24px;
+    color:#fff;
+    font-weight:700;
+    font-size: 18px;
+  }
+  .breadcrumb{
+    padding: 14px 24px 0 24px;
+    font-size: 14px;
+  }
+  .breadcrumb a{ color:#1a4f9c; text-decoration:none; }
+  .breadcrumb span{ color:#555; }
+
+  main{
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 24px;
+    text-align:center;
+  }
+  h1{
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  .subsecao-nome{
+    color: var(--blue);
+  }
+
+  .queue-card{
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    padding: 40px 24px;
+    margin-top: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
+  .spinner{
+    width: 54px;
+    height: 54px;
+    border: 5px solid #e2e2e2;
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  .queue-status{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .queue-position{
+    font-size: 15px;
+    color:#555;
+    margin-bottom: 22px;
+  }
+  .queue-position b{
+    color: var(--blue);
+    font-size: 22px;
+  }
+
+  .progress-track{
+    width: 100%;
+    max-width: 380px;
+    height: 8px;
+    background:#eee;
+    border-radius:4px;
+    margin: 0 auto;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background: var(--blue);
+    transition: width .5s ease;
+  }
+
+  .connected{
+    display:none;
+  }
+  .connected .status-dot{
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background: var(--green);
+    margin-right:8px;
+  }
+  .connected p{
+    font-size:16px;
+    margin: 6px 0 0 0;
+  }
+
+  .back-link{
+    display:inline-block;
+    margin-top: 26px;
+    font-size: 14px;
+    color: var(--blue);
+    text-decoration:none;
+  }
+
+  footer.note{
+    max-width: 760px;
+    margin: 30px auto 0 auto;
+    padding: 0 24px 30px 24px;
+    font-size:12px;
+    color:#888;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">JUSTIÇA FEDERAL — Balcão Virtual do TRF6</header>
+
+<div class="breadcrumb">
+  <a href="index.html">Demais Subseções</a> <span>»</span>
+  <span id="crumb-atual">Atendimento</span>
+</div>
+
+<main>
+  <h1>Atendimento por Vídeo</h1>
+  <p>Subseção Judiciária de <strong class="subsecao-nome" id="subsecao-titulo">—</strong></p>
+
+  <div class="queue-card" id="queue-card">
+    <div class="spinner" id="spinner"></div>
+    <div class="queue-status" id="queue-status">Entrando na fila de atendimento...</div>
+    <div class="queue-position" id="queue-position">Posição na fila: <b id="posicao">—</b></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="connected" id="connected">
+      <p><span class="status-dot"></span> Atendente conectado. Iniciando videochamada...</p>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-link">← Voltar para a lista de subseções</a>
+</main>
+
+<footer class="note">
+  Ambiente de demonstração — a fila de atendimento acima é simulada para fins de apresentação.
+</footer>
+
+<script>
+  // Lê o nome da subseção a partir da URL (?subsecao=Nome)
+  const params = new URLSearchParams(window.location.search);
+  const subsecao = params.get("subsecao") || "Subseção Judiciária";
+  document.getElementById("subsecao-titulo").textContent = subsecao;
+  document.getElementById("crumb-atual").textContent = "Atendimento - " + subsecao;
+  document.title = "Atendimento por Vídeo - " + subsecao;
+
+  // ------------------------------------------------------------------
+  // Posição na fila: simulação 100% local (sem backend/middleware).
+  // A posição inicial é sorteada e vai decrescendo com o tempo, até
+  // chegar a zero e "conectar" com o atendente.
+  // ------------------------------------------------------------------
+  const posicaoEl = document.getElementById("posicao");
+  const statusEl = document.getElementById("queue-status");
+  const progressFill = document.getElementById("progress-fill");
+
+  let posicao = Math.floor(Math.random() * 3) + 2; // fila simulada entre 2 e 4
+  const totalSteps = posicao + 1;
+  let step = 0;
+
+  posicaoEl.textContent = posicao;
+
+  const interval = setInterval(() => {
+    posicao--;
+    step++;
+    progressFill.style.width = Math.round((step / totalSteps) * 100) + "%";
+
+    if (posicao > 0){
+      posicaoEl.textContent = posicao;
+    } else {
+      clearInterval(interval);
+      statusEl.textContent = "Você é o próximo. Conectando com um atendente...";
+      posicaoEl.parentElement.style.display = "none";
+
+      setTimeout(() => {
+        document.getElementById("spinner").style.display = "none";
+        document.getElementById("connected").style.display = "block";
+        statusEl.style.display = "none";
+        carregarWidgetVideo(subsecao);
+      }, 1800);
+    }
+  }, 1500);
+
+  // Carrega o widget de vídeo (Surfly / NICE inContact) com os mesmos parâmetros
+  // usados no site de origem, apenas personalizando o título do modal com a subseção.
+  function carregarWidgetVideo(nomeSubsecao){
+    window.showVideoChatButton = true;
+    window.scaleDroneChannelId = 'fygLrCqVZQCdZfs6';
+    window.nicBusNumber        = '4600164';
+    window.nicChatPOC          = '3ab581ef-8970-4ffe-abec-40eb571c614a';
+    window.clusterNiC          = 'c37';
+    window.surflyWidgetKey     = 'f52dd9f008ab43fe902a56f81486af2f';
+    window.videoSignalerURL    = "https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=Surfly_Signaler&bus_no=4600164&scriptId=169206032&skill_no=20755015&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177";
+    window.chatSignalerURL     = "https://home-c37.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=LR\\Surfly_Signaler&bus_no=4600164&scriptId=169204331&skill_no=16369916&p1=p1&p2=p2&p3=p3&p4=p4&p5=p5&Guid=30f3fd7e-9b68-4883-a538-9384bb9c0177";
+    window.surflyModalTitle    = 'Iniciar chamada de vídeo — ' + nomeSubsecao;
+    window.surflyModalBody     = 'Ao clicar em Aceitar, um atendente entrará automaticamente na videochamada com você. Você poderá habilitar/desabilitar sua câmera e microfone. É possível encerrar a chamada a qualquer momento fechando esta aba ou clicando em ✕ no menu.';
+
+    const script = document.createElement("script");
+    script.src = "https://nic.surfly.com/surfly-nic-script.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }
+</script>
+
+</body>
+</html>
