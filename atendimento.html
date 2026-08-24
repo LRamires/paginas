@@ -113,6 +113,36 @@
     margin: 6px 0 0 0;
   }
 
+  .cta-videochamada{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin: 24px auto 0 auto;
+    padding: 18px 36px;
+    font-size: 18px;
+    font-weight: 700;
+    color:#fff;
+    background: linear-gradient(135deg, var(--blue), #123d78);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(26,79,156,0.35);
+    animation: pulse 1.8s ease-in-out infinite;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .cta-videochamada:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(26,79,156,0.45);
+  }
+  .cta-videochamada .icone{
+    font-size: 22px;
+  }
+  @keyframes pulse{
+    0%, 100% { box-shadow: 0 6px 18px rgba(26,79,156,0.35); }
+    50% { box-shadow: 0 6px 26px rgba(26,79,156,0.6); }
+  }
+
   .back-link{
     display:inline-block;
     margin-top: 26px;
@@ -151,8 +181,13 @@
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
 
     <div class="connected" id="connected">
-      <p><span class="status-dot"></span> Atendente conectado. Iniciando videochamada...</p>
+      <p><span class="status-dot"></span> Atendente disponível.</p>
     </div>
+
+    <button class="cta-videochamada" id="botao-iniciar-chamada">
+      <span class="icone">🎥</span>
+      <span>Iniciar Videochamada</span>
+    </button>
   </div>
 
   <a href="index.html" class="back-link">← Voltar para a lista de subseções</a>
@@ -196,21 +231,17 @@
       clearInterval(interval);
       statusEl.textContent = "Você é o próximo. Conectando com um atendente...";
       posicaoEl.parentElement.style.display = "none";
-
-      setTimeout(() => {
-        document.getElementById("spinner").style.display = "none";
-        document.getElementById("connected").style.display = "block";
-        statusEl.style.display = "none";
-        carregarWidgetVideo(subsecao);
-      }, 2500);
+      carregarWidgetVideo(subsecao);
     }
   }, 4000); // cada passo da fila dura mais tempo
 
   // Carrega o widget de vídeo (Surfly / NICE inContact) com os mesmos parâmetros
   // usados no site de origem, apenas personalizando o título do modal com a subseção.
-  // Ao terminar de carregar, tenta clicar automaticamente no botão que o próprio
-  // script do Surfly injeta na página, para iniciar a chamada sem exigir clique manual.
+  //
+  // showLiveChatButton = false -> remove o botão "Live Chat" que o script mostra
+  // por padrão (documentado no código-fonte oficial do surfly-nic-script).
   function carregarWidgetVideo(nomeSubsecao){
+    window.showLiveChatButton  = false;
     window.showVideoChatButton = true;
     window.scaleDroneChannelId = 'fygLrCqVZQCdZfs6';
     window.nicBusNumber        = '4600164';
@@ -225,54 +256,51 @@
     const script = document.createElement("script");
     script.src = "https://nic.surfly.com/surfly-nic-script.js";
     script.async = true;
-    script.onload = () => tentarIniciarChamadaAutomaticamente();
+    script.onload = () => substituirBotaoPadraoPorCustomizado();
     document.body.appendChild(script);
   }
 
-  // Tenta encontrar e clicar automaticamente no botão de vídeo injetado pelo
-  // script do Surfly, assim que ele aparecer no DOM. Como é um script de
-  // terceiros sem API documentada de "auto-start", isso é feito observando
-  // o DOM em busca de um botão/elemento clicável recém-criado.
-  function tentarIniciarChamadaAutomaticamente(){
-    const tentativaMaximaMs = 8000;
-    const inicioTentativa = Date.now();
+  // O script do Surfly, quando fica pronto para exibir o botão de vídeo,
+  // chama internamente a função global createVideochatButton(). Em vez de
+  // deixar o botão padrão dele (preto, canto inferior direito) aparecer,
+  // sobrescrevemos essa função para: manter a infraestrutura interna do
+  // Surfly (Surfly.button()), esconder o botão padrão, e mostrar o nosso
+  // botão estilizado e centralizado — que dispara a mesma função real
+  // (createVideochatSession) usada pelo botão original.
+  function substituirBotaoPadraoPorCustomizado(){
+    const criarBotaoPadraoOriginal = window.createVideochatButton;
+    let primeiraExibicao = true;
 
-    const seletoresPossiveis = [
-      '[id*="surfly" i]',
-      '[class*="surfly" i]',
-      'button[class*="video" i]',
-      'button[id*="video" i]'
-    ];
-
-    function encontrarBotao(){
-      for (const seletor of seletoresPossiveis){
-        const el = document.querySelector(seletor);
-        if (el && (el.tagName === "BUTTON" || el.onclick || el.getAttribute("role") === "button")){
-          return el;
-        }
+    window.createVideochatButton = function(){
+      // Mantém a inicialização interna do Surfly (necessária para a sessão funcionar)
+      if (typeof Surfly !== "undefined" && typeof Surfly.button === "function"){
+        Surfly.button();
+        const surflyIframe = document.getElementById("surfly-api-frame");
+        if (surflyIframe) surflyIframe.style.display = "none"; // esconde o botão padrão
       }
-      return null;
-    }
 
-    const observer = new MutationObserver(() => {
-      const botao = encontrarBotao();
-      if (botao){
-        observer.disconnect();
-        botao.click();
-      } else if (Date.now() - inicioTentativa > tentativaMaximaMs){
-        observer.disconnect();
-        console.warn("Botão do widget de vídeo não encontrado automaticamente — clique manual pode ser necessário.");
+      if (primeiraExibicao){
+        primeiraExibicao = false;
       }
-    });
 
-    observer.observe(document.body, { childList: true, subtree: true });
+      mostrarBotaoConectado();
+    };
+  }
 
-    // Também tenta imediatamente, caso o botão já exista logo após o load do script
-    const jaExiste = encontrarBotao();
-    if (jaExiste){
-      observer.disconnect();
-      jaExiste.click();
-    }
+  function mostrarBotaoConectado(){
+    document.getElementById("spinner").style.display = "none";
+    document.getElementById("connected").style.display = "block";
+    document.getElementById("queue-status").style.display = "none";
+
+    const botao = document.getElementById("botao-iniciar-chamada");
+    botao.style.display = "inline-flex";
+    botao.onclick = function(){
+      botao.disabled = true;
+      botao.style.display = "none";
+      if (typeof window.createVideochatSession === "function"){
+        window.createVideochatSession();
+      }
+    };
   }
 </script>
 
