@@ -172,14 +172,14 @@
 
   // ------------------------------------------------------------------
   // Posição na fila: simulação 100% local (sem backend/middleware).
-  // A posição inicial é sorteada e vai decrescendo com o tempo, até
-  // chegar a zero e "conectar" com o atendente.
+  // Começa fixo em 2 e vai decrescendo até chegar a zero, aí "conecta"
+  // com o atendente automaticamente.
   // ------------------------------------------------------------------
   const posicaoEl = document.getElementById("posicao");
   const statusEl = document.getElementById("queue-status");
   const progressFill = document.getElementById("progress-fill");
 
-  let posicao = Math.floor(Math.random() * 3) + 2; // fila simulada entre 2 e 4
+  let posicao = 2; // fila simulada fixa, começando em 2
   const totalSteps = posicao + 1;
   let step = 0;
 
@@ -202,12 +202,14 @@
         document.getElementById("connected").style.display = "block";
         statusEl.style.display = "none";
         carregarWidgetVideo(subsecao);
-      }, 1800);
+      }, 2500);
     }
-  }, 1500);
+  }, 4000); // cada passo da fila dura mais tempo
 
   // Carrega o widget de vídeo (Surfly / NICE inContact) com os mesmos parâmetros
   // usados no site de origem, apenas personalizando o título do modal com a subseção.
+  // Ao terminar de carregar, tenta clicar automaticamente no botão que o próprio
+  // script do Surfly injeta na página, para iniciar a chamada sem exigir clique manual.
   function carregarWidgetVideo(nomeSubsecao){
     window.showVideoChatButton = true;
     window.scaleDroneChannelId = 'fygLrCqVZQCdZfs6';
@@ -223,7 +225,54 @@
     const script = document.createElement("script");
     script.src = "https://nic.surfly.com/surfly-nic-script.js";
     script.async = true;
+    script.onload = () => tentarIniciarChamadaAutomaticamente();
     document.body.appendChild(script);
+  }
+
+  // Tenta encontrar e clicar automaticamente no botão de vídeo injetado pelo
+  // script do Surfly, assim que ele aparecer no DOM. Como é um script de
+  // terceiros sem API documentada de "auto-start", isso é feito observando
+  // o DOM em busca de um botão/elemento clicável recém-criado.
+  function tentarIniciarChamadaAutomaticamente(){
+    const tentativaMaximaMs = 8000;
+    const inicioTentativa = Date.now();
+
+    const seletoresPossiveis = [
+      '[id*="surfly" i]',
+      '[class*="surfly" i]',
+      'button[class*="video" i]',
+      'button[id*="video" i]'
+    ];
+
+    function encontrarBotao(){
+      for (const seletor of seletoresPossiveis){
+        const el = document.querySelector(seletor);
+        if (el && (el.tagName === "BUTTON" || el.onclick || el.getAttribute("role") === "button")){
+          return el;
+        }
+      }
+      return null;
+    }
+
+    const observer = new MutationObserver(() => {
+      const botao = encontrarBotao();
+      if (botao){
+        observer.disconnect();
+        botao.click();
+      } else if (Date.now() - inicioTentativa > tentativaMaximaMs){
+        observer.disconnect();
+        console.warn("Botão do widget de vídeo não encontrado automaticamente — clique manual pode ser necessário.");
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Também tenta imediatamente, caso o botão já exista logo após o load do script
+    const jaExiste = encontrarBotao();
+    if (jaExiste){
+      observer.disconnect();
+      jaExiste.click();
+    }
   }
 </script>
 
